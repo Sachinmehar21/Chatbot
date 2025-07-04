@@ -29,6 +29,7 @@ function App() {
   });
   const windowWidth = useWindowWidth();
   const isMobile = windowWidth <= 600;
+  const API_BASE = process.env.REACT_APP_API_BASE || '';
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -46,7 +47,7 @@ function App() {
 
   const checkServerConnection = async () => {
     try {
-      await axios.get('http://localhost:5000/health', { timeout: 3000 });
+      await axios.get(`${API_BASE}/health`, { timeout: 3000 });
       setIsConnected(true);
     } catch (err) {
       setIsConnected(false);
@@ -66,9 +67,9 @@ function App() {
     setInput('');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/chat', 
+      const res = await axios.post(`${API_BASE}/api/chat`, 
         { message: userMessage },
-        { timeout: 60000 } // 60 second timeout
+        { timeout: 60000 }
       );
       
       const botMessage = {
